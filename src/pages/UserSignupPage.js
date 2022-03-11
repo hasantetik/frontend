@@ -1,5 +1,6 @@
 import React from "react";
-import axios from "axios";
+import { signup } from '../api/apiCalls';
+import Input from '../components/Input';
 
 class UserSignupPage extends React.Component {
     state = {
@@ -7,17 +8,24 @@ class UserSignupPage extends React.Component {
         displayName:null,
         password:null,
         passwordRepeat:null,
-        pendingApiCall: false
+        pendingApiCall: false,
+        errors: {
+
+        }
+        
     };
 
     onChange = event => {
        const { name, value} = event.target;
+       const errors = {...this.state.errors}
+       errors[name] = undefined
         this.setState({
-            [name]: value
+            [name]: value,
+            errors
         })
     };
 
-    onClickSignUp = event => {
+    onClickSignUp = async event => {
         event.preventDefault();
 
         const { username, displayName ,password} = this.state
@@ -28,28 +36,27 @@ class UserSignupPage extends React.Component {
             password
         };
         this.setState({ pendingApiCall: true});
-        axios.post('/api/1.0/users', body)
-        .then(response => {
-            this.setState({ pendingApiCall : false})
-        }).catch(error => {
-            this.setState({pendingApiCall:false})
-        });
-        
+
+        try{
+            const response = await signup(body);
+        }catch(error){
+         if(error.response.data.validationErrors)
+            this.setState({ errors: error.response.data.validationErrors });
+        }
+        this.setState({ pendingApiCall:false });
+
     }
 
     render() {
+        const { pendingApiCall, errors } = this.state;
+        const { username, displayName } = errors;
+
         return (
             <div className="container">
                      <form>
             <h1 className="text-center">Sign Up</h1>
-            <div className="form-group">      
-                <label>Username</label>
-                <input className="form-control" name="username" onChange={this.onChange}/>
-            </div>
-            <div className="form-group">  
-                <label>Display Name</label>
-                <input className="form-control" name="displayName" onChange={this.onChange}/>
-            </div>  
+            <Input name="username" label="Username" error={username} onChange={this.onChange} />
+            <Input name="displayName" label="Display Name" error={displayName} onChange={this.onChange} />
             <div className="form-group">  
                 <label>Password</label>
                 <input className="form-control" name="password" type="password" onChange={this.onChange}/>
@@ -62,8 +69,8 @@ class UserSignupPage extends React.Component {
             <button 
             className="btn btn-primary" 
             onClick={this.onClickSignUp}
-            disabled={this.state.pendingApiCall}
-            >{ this.state.pendingApiCall ? <span className="spinner-border spinner-border-sm"></span> : ''} Sign Up
+            disabled={pendingApiCall}
+            >{ pendingApiCall ? <span className="spinner-border spinner-border-sm"></span> : ''} Sign Up
             </button>
             </div>
         </form>
