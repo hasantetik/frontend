@@ -78,6 +78,10 @@ class UserSignupPage extends React.Component {
             >{ pendingApiCall ? <span className="spinner-border spinner-border-sm"></span> : ''} {t('Sign Up')}
             </button>
             </div>
+            <div>
+                <img src="https://flagcdn.com/w40/tr.png" alt="TURKEY"></img>
+                <img src="https://flagcdn.com/w40/us.png" alt="US"></img>
+            </div>
         </form>
             </div>
         );
