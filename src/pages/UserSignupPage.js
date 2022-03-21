@@ -58,6 +58,11 @@ class UserSignupPage extends React.Component {
 
     }
 
+    onChangeLanguage = language => {
+        const { i18n } = this.props;
+        i18n.changeLanguage(language);
+    }
+
     render() {
         const { pendingApiCall, errors } = this.state;
         const { username, displayName,password,passwordRepeat } = errors;
@@ -79,8 +84,8 @@ class UserSignupPage extends React.Component {
             </button>
             </div>
             <div>
-                <img src="https://flagcdn.com/w40/tr.png" alt="TURKEY"></img>
-                <img src="https://flagcdn.com/w40/us.png" alt="US"></img>
+                <img src="https://flagcdn.com/w40/tr.png" onClick={() => this.onChangeLanguage('tr')} alt="TURKEY"></img>
+                <img src="https://flagcdn.com/w40/us.png" onClick={() => this.onChangeLanguage('en')} alt="US"></img>
             </div>
         </form>
             </div>
