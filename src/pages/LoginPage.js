@@ -15,7 +15,7 @@ class UserLoginPage extends React.Component{
     };
 
 
-    
+
     render() {
         const { pendingApiCall, errors } = this.state;
         const { username, displayName,password,passwordRepeat } = errors;
@@ -35,10 +35,7 @@ class UserLoginPage extends React.Component{
             >{ pendingApiCall ? <span className="spinner-border spinner-border-sm"></span> : ''} {t('Sign Up')}
             </button>
             </div>
-            <div>
-                <img src="https://flagcdn.com/w40/tr.png" onClick={() => this.onChangeLanguage('tr')} style={{cursor: 'pointer'}} alt="TURKEY"></img>
-                <img src="https://flagcdn.com/w40/us.png" onClick={() => this.onChangeLanguage('en')} style={{cursor: 'pointer'}} alt="US"></img>
-            </div>
+         
         </form>
             </div>
         );
